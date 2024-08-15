@@ -1,0 +1,111 @@
+<html lang="es"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Derivadas</title>
+    <script src="script.js" defer=""></script>
+    <style>
+                body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        
+        label {
+            font-size: 1.2em;
+        }
+        
+        input[type="text"] {
+            font-size: 1em;
+            padding: 8px;
+            width: 200px;
+            margin-right: 10px;
+        }
+        
+        button {
+            font-size: 1em;
+            padding: 10px 15px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: #0056b3;
+        }
+        
+        p {
+            font-size: 1.2em;
+            color: #333;
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculadora de Derivadas</h1>
+    <label for="inputField">f(x) =</label>
+    <input type="text" id="inputField" placeholder="a*x^n">
+    <button onclick="calculate()">Calcular</button>
+    <p id="result">6x^2</p>
+<script>
+  function powerRule(a, n) {
+      let fx = a * n;
+      let gx = n - 1;
+      return { fx, gx };
+  }
+  
+  function calculate() {
+      try {
+          // Obtener el valor del input
+          let data = document.getElementById("inputField").value.trim();
+          const caracteres_validos = "0123456789x^";
+  
+          // Validar caracteres
+          for (let char of data) {
+              if (!caracteres_validos.includes(char)) {
+                  throw new Error(`Caracter inválido: '${char}'`);
+              }
+          }
+  
+          // Comprobar si no hay 'x'
+          if (!data.includes("x")) {
+              document.getElementById("result").textContent = "0";
+          } else {
+              // Si hay 'x' pero no hay '^', añadir exponente 1
+              if (data.includes("x") && !data.includes("^")) {
+                  data += "^1";
+              }
+  
+              // Reemplazar '^' por espacio vacío y 'x' por espacio
+              data = data.replace("^", "").replace("x", " ");
+  
+              // Dividir y convertir a números
+              let [a, n] = data.split(" ").map(Number);
+              let { fx, gx } = powerRule(a, n);
+  
+              // Verificar y mostrar resultados
+              if (gx === 0) {
+                  document.getElementById("result").textContent = `${fx}`;
+              } else if (gx === 1) {
+                  document.getElementById("result").textContent = `${fx}x`;
+              } else {
+                  document.getElementById("result").textContent = `${fx}x^${gx}`;
+              }
+          }
+      } catch (error) {
+          document.getElementById("result").textContent = "Error: " + error.message;
+      }
+  }
+
+</script>
+
+
+</body></html>
